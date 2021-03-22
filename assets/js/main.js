@@ -11,24 +11,31 @@ function addBookToLibrary(title, author, pages, read) {
   myLibrary.push(new Book(title, author, pages, read));
 }
 
+
+
 addBookToLibrary('Alchemist', 'Paolo Coelho', 125, 'read');
 addBookToLibrary('Romeo and juliet', 'unknown', 360, 'not read');
 addBookToLibrary('Inception', 'Hans Zimmer', 450, 'read');
 addBookToLibrary('Tarzan', 'Disney', 122, 'not read');
 
+
+
 const myTable = document.querySelector('.myTable');
 
+
 for (let i = 0; i < myLibrary.length; i += 1) {
-  const tr = document.createElement('tr');
-  const myKeys = Object.keys(myLibrary[i]);
-  const myValues = Object.values(myLibrary[i]);
-  for (let j = 0; j < myKeys.length; j += 1) {
-    const th = document.createElement('th');
-    th.textContent = myValues[j];
-    tr.appendChild(th);
-  }
-  myTable.appendChild(tr);
+const tr = document.createElement('tr');
+const myKeys = Object.keys(myLibrary[i]);
+const myValues = Object.values(myLibrary[i]);
+for (let j = 0; j < myKeys.length; j += 1) {
+  const th = document.createElement('th');
+  th.textContent = myValues[j];
+  tr.appendChild(th);
 }
+myTable.appendChild(tr);
+};
+
+
 
 const bookForm = document.querySelector(".book-form");
 const addBook = document.querySelector(".add-book");
@@ -42,15 +49,37 @@ addBook.addEventListener('click', function() {
   showForm();
 });
 
-const addNewBook =  function () {
+const addNewBook = function () {
   let bookTitle = document.getElementById("Title").value;
   let bookAuthor = document.getElementById("Author").value;
   let bookPages = document.getElementById("Pages").value;
   let bookRead = document.getElementById("Read").value;
+  let arr = [];
+  arr.push(bookTitle, bookAuthor, bookPages, bookRead);
   addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
+  showBook(arr);
 }
 
 submitBook.addEventListener('click', function () {
   addNewBook();
   bookForm.classList.toggle("show-form");
+  resetValues();
 });
+
+const showBook = (arr) => {
+  const tr = document.createElement('tr');
+  for (let i = 0; i < arr.length; i += 1) {
+    const th = document.createElement('th');
+    th.textContent = arr[i];
+    tr.appendChild(th);
+  }
+  myTable.appendChild(tr);
+}
+
+const resetValues = () => {
+  document.getElementById("Title").value = null;
+  document.getElementById("Author").value = null;
+  document.getElementById("Pages").value = null;
+  document.getElementById("Read").value = null;
+}
+
