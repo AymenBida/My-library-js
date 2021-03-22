@@ -32,16 +32,25 @@ for (let i = 0; i < myLibrary.length; i += 1) {
 
 const bookForm = document.querySelector(".book-form");
 const addBook = document.querySelector(".add-book");
+const submitBook = document.querySelector('.submit-book');
 
 const showForm = function () {
   bookForm.classList.toggle('show-form');
 }
 
 addBook.addEventListener('click', function() {
-  showForm()
+  showForm();
 });
 
-var bookTitle = document.getElementById('Title').value;
-var bookAuthor = document.getElementById('Author').value;
-var bookPages = document.getElementById('Pages').value;
-var bookRead = document.getElementById('Read').value;
+const addNewBook =  function () {
+  let bookTitle = document.getElementById("Title").value;
+  let bookAuthor = document.getElementById("Author").value;
+  let bookPages = document.getElementById("Pages").value;
+  let bookRead = document.getElementById("Read").value;
+  addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
+}
+
+submitBook.addEventListener('click', function () {
+  addNewBook();
+  bookForm.classList.toggle("show-form");
+});
