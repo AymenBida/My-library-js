@@ -29,3 +29,19 @@ for (let i = 0; i < myLibrary.length; i += 1) {
   }
   myTable.appendChild(tr);
 }
+
+const bookForm = document.querySelector(".book-form");
+const addBook = document.querySelector(".add-book");
+
+const showForm = function () {
+  bookForm.classList.toggle('show-form');
+}
+
+addBook.addEventListener('click', function() {
+  showForm()
+});
+
+var bookTitle = document.getElementById('Title').value;
+var bookAuthor = document.getElementById('Author').value;
+var bookPages = document.getElementById('Pages').value;
+var bookRead = document.getElementById('Read').value;
