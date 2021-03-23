@@ -8,14 +8,14 @@ function Book(title, author, pages, read) {
   this.read = read;
 }
 
-Book.prototype.changeStatus = function() {
+Book.prototype.changeStatus = function(index) {
   if (this.read == 'Read') {
     this.read = 'Not Read';
   } else {
     this.read = 'Read';
   };
-  let arr = [this.title, this.author, this.pages, this.read]
-  showBook(arr);
+  let readStatus = document.querySelector(`th[data-index='${index}']`)
+  readStatus.textContent = this.read
 }
 
 function addBookToLibrary(title, author, pages, read) {
@@ -67,11 +67,15 @@ const deleteBook = (index) => {
 const showBook = (arr) => {
   const tr = document.createElement('tr');
   tr.dataset.index = counter;
-  for (let i = 0; i < arr.length; i += 1) {
+  for (let i = 0; i < arr.length - 1; i += 1) {
     const th = document.createElement('th');
     th.textContent = arr[i];
     tr.appendChild(th);
   }
+  const th = document.createElement('th');
+  th.textContent = arr[3];
+  th.dataset.index = counter;
+  tr.appendChild(th)
   const delButton = document.createElement('button');
   delButton.textContent = 'Delete book';
   delButton.dataset.index = counter;
@@ -80,7 +84,7 @@ const showBook = (arr) => {
   changeButton.textContent = 'Change status';
   // changeButton.dataset.index = counter;
   changeButton.addEventListener('click', () => {
-    myLibrary[bookNumber].changeStatus();
+    myLibrary[bookNumber].changeStatus(bookNumber);
   })
   delButton.addEventListener('click', () => {
     deleteBook(bookNumber);
