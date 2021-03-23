@@ -1,4 +1,5 @@
 const myLibrary = [];
+let counter = 0;
 
 function Book(title, author, pages, read) {
   this.title = title;
@@ -13,27 +14,28 @@ function addBookToLibrary(title, author, pages, read) {
 
 
 
-addBookToLibrary('Alchemist', 'Paolo Coelho', 125, 'read');
-addBookToLibrary('Romeo and juliet', 'unknown', 360, 'not read');
-addBookToLibrary('Inception', 'Hans Zimmer', 450, 'read');
-addBookToLibrary('Tarzan', 'Disney', 122, 'not read');
+// addBookToLibrary('Alchemist', 'Paolo Coelho', 125, 'read');
+// addBookToLibrary('Romeo and juliet', 'unknown', 360, 'not read');
+// addBookToLibrary('Inception', 'Hans Zimmer', 450, 'read');
+// addBookToLibrary('Tarzan', 'Disney', 122, 'not read');
 
 
 
 const myTable = document.querySelector('.myTable');
 
 
-for (let i = 0; i < myLibrary.length; i += 1) {
-const tr = document.createElement('tr');
-const myKeys = Object.keys(myLibrary[i]);
-const myValues = Object.values(myLibrary[i]);
-for (let j = 0; j < myKeys.length; j += 1) {
-  const th = document.createElement('th');
-  th.textContent = myValues[j];
-  tr.appendChild(th);
-}
-myTable.appendChild(tr);
-};
+// for (let i = 0; i < myLibrary.length; i += 1) {
+// const tr = document.createElement('tr');
+// tr.dataset.index = i
+// const myKeys = Object.keys(myLibrary[i]);
+// const myValues = Object.values(myLibrary[i]);
+// for (let j = 0; j < myKeys.length; j += 1) {
+//   const th = document.createElement('th');
+//   th.textContent = myValues[j];
+//   tr.appendChild(th);
+// }
+// myTable.appendChild(tr);
+// };
 
 
 
@@ -66,14 +68,31 @@ submitBook.addEventListener('click', function () {
   resetValues();
 });
 
+const deleteBook = (index) => {
+  let bookToBeDeleted = document.querySelector(`tr[data-index = '${index}']`)
+  bookToBeDeleted.remove()
+  delete myLibrary[index]
+}
+
+
 const showBook = (arr) => {
   const tr = document.createElement('tr');
+  tr.dataset.index = counter
   for (let i = 0; i < arr.length; i += 1) {
     const th = document.createElement('th');
     th.textContent = arr[i];
     tr.appendChild(th);
   }
+  const delButton = document.createElement('button');
+  delButton.textContent = 'Delete book'
+  delButton.dataset.index = counter 
+  let bookNumber = counter 
+  delButton.addEventListener('click', function () {
+    deleteBook(bookNumber);
+  })
+  tr.appendChild(delButton);
   myTable.appendChild(tr);
+  counter += 1;
 }
 
 const resetValues = () => {
