@@ -85,7 +85,8 @@ const addNewBook = () => {
   const bookTitle = document.getElementById('Title').value;
   const bookAuthor = document.getElementById('Author').value;
   const bookPages = document.getElementById('Pages').value;
-  const bookRead = document.getElementById('Read').value;
+  let bookRead = document.getElementById('Read');
+  bookRead = (bookRead.checked) ? 'Read' : 'Not Read';
   const arr = [];
   arr.push(bookTitle, bookAuthor, bookPages, bookRead);
   addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
