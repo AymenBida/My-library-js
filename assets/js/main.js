@@ -8,15 +8,15 @@ function Book(title, author, pages, read) {
   this.read = read;
 }
 
-Book.prototype.changeStatus = function(index) {
-  if (this.read == 'Read') {
+Book.prototype.changeStatus = function fn(index) {
+  if (this.read === 'Read') {
     this.read = 'Not Read';
   } else {
     this.read = 'Read';
-  };
-  let readStatus = document.querySelector(`th[data-index='${index}']`)
-  readStatus.textContent = this.read
-}
+  }
+  const readStatus = document.querySelector(`th[data-index='${index}']`);
+  readStatus.textContent = this.read;
+};
 
 function addBookToLibrary(title, author, pages, read) {
   myLibrary.push(new Book(title, author, pages, read));
@@ -73,9 +73,10 @@ const showBook = (arr) => {
     tr.appendChild(th);
   }
   const th = document.createElement('th');
-  th.textContent = arr[3];
+  const [, , , myArr] = arr;
+  th.textContent = myArr;
   th.dataset.index = counter;
-  tr.appendChild(th)
+  tr.appendChild(th);
   const delButton = document.createElement('button');
   delButton.textContent = 'Delete book';
   delButton.dataset.index = counter;
@@ -85,7 +86,7 @@ const showBook = (arr) => {
   // changeButton.dataset.index = counter;
   changeButton.addEventListener('click', () => {
     myLibrary[bookNumber].changeStatus(bookNumber);
-  })
+  });
   delButton.addEventListener('click', () => {
     deleteBook(bookNumber);
   });
@@ -101,7 +102,6 @@ const resetValues = () => {
   document.getElementById('Pages').value = null;
   document.getElementById('Read').checked = false;
 };
-
 
 
 const addNewBook = () => {
