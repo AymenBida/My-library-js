@@ -13,12 +13,10 @@ function addBookToLibrary(title, author, pages, read) {
 }
 
 
-
 // addBookToLibrary('Alchemist', 'Paolo Coelho', 125, 'read');
 // addBookToLibrary('Romeo and juliet', 'unknown', 360, 'not read');
 // addBookToLibrary('Inception', 'Hans Zimmer', 450, 'read');
 // addBookToLibrary('Tarzan', 'Disney', 122, 'not read');
-
 
 
 const myTable = document.querySelector('.myTable');
@@ -38,67 +36,64 @@ const myTable = document.querySelector('.myTable');
 // };
 
 
-
-const bookForm = document.querySelector(".book-form");
-const addBook = document.querySelector(".add-book");
+const bookForm = document.querySelector('.book-form');
+const addBook = document.querySelector('.add-book');
 const submitBook = document.querySelector('.submit-book');
 
-const showForm = function () {
+const showForm = () => {
   bookForm.classList.toggle('show-form');
-}
+};
 
-addBook.addEventListener('click', function() {
+addBook.addEventListener('click', () => {
   showForm();
 });
 
-const addNewBook = function () {
-  let bookTitle = document.getElementById("Title").value;
-  let bookAuthor = document.getElementById("Author").value;
-  let bookPages = document.getElementById("Pages").value;
-  let bookRead = document.getElementById("Read").value;
-  let arr = [];
-  arr.push(bookTitle, bookAuthor, bookPages, bookRead);
-  addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
-  showBook(arr);
-}
-
-submitBook.addEventListener('click', function () {
-  addNewBook();
-  bookForm.classList.toggle("show-form");
-  resetValues();
-});
-
 const deleteBook = (index) => {
-  let bookToBeDeleted = document.querySelector(`tr[data-index = '${index}']`)
-  bookToBeDeleted.remove()
-  delete myLibrary[index]
-}
-
+  const bookToBeDeleted = document.querySelector(`tr[data-index = '${index}']`);
+  bookToBeDeleted.remove();
+  delete myLibrary[index];
+};
 
 const showBook = (arr) => {
   const tr = document.createElement('tr');
-  tr.dataset.index = counter
+  tr.dataset.index = counter;
   for (let i = 0; i < arr.length; i += 1) {
     const th = document.createElement('th');
     th.textContent = arr[i];
     tr.appendChild(th);
   }
   const delButton = document.createElement('button');
-  delButton.textContent = 'Delete book'
-  delButton.dataset.index = counter 
-  let bookNumber = counter 
-  delButton.addEventListener('click', function () {
+  delButton.textContent = 'Delete book';
+  delButton.dataset.index = counter;
+  const bookNumber = counter;
+  delButton.addEventListener('click', () => {
     deleteBook(bookNumber);
-  })
+  });
   tr.appendChild(delButton);
   myTable.appendChild(tr);
   counter += 1;
-}
+};
 
 const resetValues = () => {
-  document.getElementById("Title").value = null;
-  document.getElementById("Author").value = null;
-  document.getElementById("Pages").value = null;
-  document.getElementById("Read").value = null;
-}
+  document.getElementById('Title').value = null;
+  document.getElementById('Author').value = null;
+  document.getElementById('Pages').value = null;
+  document.getElementById('Read').value = null;
+};
 
+const addNewBook = () => {
+  const bookTitle = document.getElementById('Title').value;
+  const bookAuthor = document.getElementById('Author').value;
+  const bookPages = document.getElementById('Pages').value;
+  const bookRead = document.getElementById('Read').value;
+  const arr = [];
+  arr.push(bookTitle, bookAuthor, bookPages, bookRead);
+  addBookToLibrary(bookTitle, bookAuthor, bookPages, bookRead);
+  showBook(arr);
+};
+
+submitBook.addEventListener('click', () => {
+  addNewBook();
+  bookForm.classList.toggle('show-form');
+  resetValues();
+});
