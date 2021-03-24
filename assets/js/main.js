@@ -1,4 +1,8 @@
 const myLibrary = [];
+const myTable = document.querySelector('.myTable');
+const bookForm = document.querySelector('.book-form');
+const addBook = document.querySelector('.add-book');
+const submitBook = document.querySelector('.submit-book');
 let counter = 0;
 
 function Book(title, author, pages, read) {
@@ -8,48 +12,6 @@ function Book(title, author, pages, read) {
   this.read = read;
 }
 
-Book.prototype.changeStatus = function fn(index) {
-  if (this.read === 'Read') {
-    this.read = 'Not Read';
-  } else {
-    this.read = 'Read';
-  }
-  const readStatus = document.querySelector(`th[data-index='${index}']`);
-  readStatus.textContent = this.read;
-};
-
-function addBookToLibrary(title, author, pages, read) {
-  myLibrary.push(new Book(title, author, pages, read));
-}
-
-
-// addBookToLibrary('Alchemist', 'Paolo Coelho', 125, 'read');
-// addBookToLibrary('Romeo and juliet', 'unknown', 360, 'not read');
-// addBookToLibrary('Inception', 'Hans Zimmer', 450, 'read');
-// addBookToLibrary('Tarzan', 'Disney', 122, 'not read');
-
-
-const myTable = document.querySelector('.myTable');
-
-
-// for (let i = 0; i < myLibrary.length; i += 1) {
-// const tr = document.createElement('tr');
-// tr.dataset.index = i
-// const myKeys = Object.keys(myLibrary[i]);
-// const myValues = Object.values(myLibrary[i]);
-// for (let j = 0; j < myKeys.length; j += 1) {
-//   const th = document.createElement('th');
-//   th.textContent = myValues[j];
-//   tr.appendChild(th);
-// }
-// myTable.appendChild(tr);
-// };
-
-
-const bookForm = document.querySelector('.book-form');
-const addBook = document.querySelector('.add-book');
-const submitBook = document.querySelector('.submit-book');
-
 const showForm = () => {
   bookForm.classList.toggle('show-form');
 };
@@ -58,51 +20,63 @@ addBook.addEventListener('click', () => {
   showForm();
 });
 
+function addBookToLibrary(title, author, pages, read) {
+  myLibrary.push(new Book(title, author, pages, read));
+}
+
+const createBookTr = (number) => {
+  const tr = document.createElement('tr');
+  tr.dataset.index = number;
+  return tr;
+};
+
+const createBookTh = (text) => {
+  const th = document.createElement('th');
+  th.textContent = text;
+  return th;
+};
+
 const deleteBook = (index) => {
   const bookToBeDeleted = document.querySelector(`tr[data-index = '${index}']`);
   bookToBeDeleted.remove();
   delete myLibrary[index];
 };
 
-const showBook = (arr) => {
-  const tr = document.createElement('tr');
-  tr.dataset.index = counter;
-  for (let i = 0; i < arr.length - 1; i += 1) {
-    const th = document.createElement('th');
-    th.textContent = arr[i];
-    tr.appendChild(th);
-  }
-  const th = document.createElement('th');
-  const [, , , myArr] = arr;
-  th.textContent = myArr;
-  th.dataset.index = counter;
-  tr.appendChild(th);
+const createDeleteButton = (number) => {
   const delButton = document.createElement('button');
   delButton.textContent = 'Delete book';
-  delButton.dataset.index = counter;
-  const bookNumber = counter;
+  delButton.dataset.index = number;
+  delButton.addEventListener('click', () => {
+    deleteBook(number);
+  });
+  return delButton;
+};
+
+const createChangeButton = (number) => {
   const changeButton = document.createElement('button');
   changeButton.textContent = 'Change status';
-  // changeButton.dataset.index = counter;
   changeButton.addEventListener('click', () => {
-    myLibrary[bookNumber].changeStatus(bookNumber);
+    myLibrary[number].changeStatus(number);
   });
-  delButton.addEventListener('click', () => {
-    deleteBook(bookNumber);
-  });
+  return changeButton;
+};
+
+const showBook = (arr) => {
+  const tr = createBookTr(counter);
+  for (let i = 0; i < arr.length - 1; i += 1) {
+    const th = createBookTh(arr[i]);
+    tr.appendChild(th);
+  }
+  const th = createBookTh(arr[3]);
+  th.dataset.index = counter;
+  const delButton = createDeleteButton(counter);
+  const changeButton = createChangeButton(counter);
+  tr.appendChild(th);
   tr.appendChild(delButton);
   tr.appendChild(changeButton);
   myTable.appendChild(tr);
   counter += 1;
 };
-
-const resetValues = () => {
-  document.getElementById('Title').value = null;
-  document.getElementById('Author').value = null;
-  document.getElementById('Pages').value = null;
-  document.getElementById('Read').checked = false;
-};
-
 
 const addNewBook = () => {
   const bookTitle = document.getElementById('Title').value;
@@ -116,8 +90,25 @@ const addNewBook = () => {
   showBook(arr);
 };
 
+const resetValues = () => {
+  document.getElementById('Title').value = null;
+  document.getElementById('Author').value = null;
+  document.getElementById('Pages').value = null;
+  document.getElementById('Read').checked = false;
+};
+
 submitBook.addEventListener('click', () => {
   addNewBook();
   bookForm.classList.toggle('show-form');
   resetValues();
 });
+
+const showChangeStatus = (book, index) => {
+  const readStatus = document.querySelector(`th[data-index='${index}']`);
+  readStatus.textContent = book.read;
+};
+
+Book.prototype.changeStatus = function fn(index) {
+  this.read = (this.read === 'Read') ? 'Not Read' : 'Read';
+  showChangeStatus(this, index);
+};
